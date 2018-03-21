@@ -32,28 +32,33 @@ export default class extends Component {
           });
         }
       });
+
+      console.log(this.state.uploadedFileCloudinaryUrl);
     }
   
     render() {
       return (
-        <form>
-          <div className="FileUpload">
-            <Dropzone
-              onDrop={this.onImageDrop.bind(this)}
-              multiple={false}
-              accept="image/*">
-              <div>Drop an image or click to select a file to upload.</div>
-            </Dropzone>
-          </div>
-  
-          <div>
-            {this.state.uploadedFileCloudinaryUrl === '' ? null :
+        <div> 
+              <Nav />
+          <form>
+            <div className="FileUpload">
+              <Dropzone
+                onDrop={this.onImageDrop.bind(this)}
+                multiple={false}
+                accept="image/*">
+                <div>Drop an image or click to select a file to upload.</div>
+              </Dropzone>
+            </div>
+    
             <div>
-              <p>{this.state.uploadedFile.name}</p>
-              <img src={this.state.uploadedFileCloudinaryUrl} />
-            </div>}
+              {this.state.uploadedFileCloudinaryUrl === '' ? null :
+              <div>
+                <p>{this.state.uploadedFile.name}</p>
+                <img src={this.state.uploadedFileCloudinaryUrl} />
+              </div>}
+            </div>
+          </form>
           </div>
-        </form>
       )
     }
   }
