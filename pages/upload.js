@@ -9,14 +9,11 @@ const CLOUDINARY_UPLOAD_PRESET = 'bmzjbxoq';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/upload';
 
 export default class extends Component {
-    // constructor(props) {
-    //   super(props);
-  
-      state = {
+
+    state = {
         uploadedFile: null,
         uploadedFileCloudinaryUrl: ''
-      };
-    // }
+    };
   
     onImageDrop(files) {
       this.setState({
@@ -36,7 +33,6 @@ export default class extends Component {
         }
       });
     }
-  
   
     render() {
       return (
