@@ -13,6 +13,11 @@ const Nav = () => (
           <a>Upload</a>
         </Link>
       </li>
+      <li>
+        <Link prefetch href="/images">
+          <a>Users</a>
+        </Link>
+      </li>
     </ul>
 
     <style jsx>{`
