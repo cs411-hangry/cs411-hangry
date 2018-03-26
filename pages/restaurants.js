@@ -10,7 +10,7 @@ export default class Restaurants extends Component {
     ids: [], 
   };
     
-  async users() {
+  async restaurants() {
     const res = await fetch("http://localhost:5000/restaurants") // Call the fetch function passing the url of the API as a parameter
     const data = await res.json()
     const restaurants = data.restaurants.reduce( (p,c) => (p[c.restaurant_id] = c.restaurant_name) && p, {})
@@ -25,14 +25,16 @@ export default class Restaurants extends Component {
     return (
       <div>
         <Nav />
-        <button onClick= {this.users.bind(this)}>
+        <button onClick= {this.restaurants.bind(this)}>
           Get Restaurants
         </button>
 
         {this.state.ids.map( id => 
-        <Link key={id} prefetch href={"/restaurant?id=" + id}>
-          <a>{this.state.restaurants[id]}</a>
-        </Link>
+        <div> 
+            <Link key={id} href={"/restaurant?id=" + id}>
+                <a>{this.state.restaurants[id]}</a>
+            </Link>
+         </div>
 
         )}
       </div>

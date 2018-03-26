@@ -1,32 +1,32 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 const Nav = () => (
-  <nav>
-    <ul>
+	<nav>
+		<ul>
+			<li>
+				<Link prefetch href="/">
+					<a>Home</a>
+				</Link>
+			</li>
+			<li>
+				<Link prefetch href="/login">
+					<a>Login</a>
+				</Link>
+			</li>
+			<li>
+				<Link prefetch href="/restaurants">
+					<a>Restaurants</a>
+				</Link>
+			</li>
       <li>
-        <Link prefetch href="/">
-          <a>Home</a>
-        </Link>
-      </li>
-      <li>
-        <Link prefetch href="/login">
-          <a>Login</a>
-        </Link>
-      </li>
-      <li>
-        <Link prefetch href="/restaurants">
-          <a>Restaurants</a>
-        </Link>
-      </li>
-      <li>
-        <Link prefetch href="/search">
-          <a>Search</a>
-        </Link>
-      </li>
+				<Link prefetch href="/cuisines">
+					<a>Cuisines</a>
+				</Link>
+			</li>
 
-    </ul>
+		</ul>
 
-    <style jsx>{`
+		<style jsx>{`
       :global(body) {
         margin: 0;
         font-family: -apple-system,BlinkMacSystemFont,Avenir Next,Avenir,Helvetica,sans-serif;
@@ -44,7 +44,7 @@ const Nav = () => (
         font-size: 13px;
       }
     `}</style>
-  </nav>
-)
+	</nav>
+);
 
-export default Nav
+export default Nav;

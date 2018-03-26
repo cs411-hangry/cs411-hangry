@@ -12,7 +12,10 @@ export default class Restaurant extends Component {
 
     state = {
         uploadedFile: null,
-        uploadedFileCloudinaryUrl: ''
+        uploadedFileCloudinaryUrl: '',
+        restaurant_name: '',
+        photoLinks: [], 
+        photoIds: {}
     };
   
     onImageDrop(files) {
@@ -34,15 +37,26 @@ export default class Restaurant extends Component {
       });
     }
     
-  async photos(id) {
+   setRestaurantName = async (id) => {
     const res = await fetch("http://localhost:5000/restaurant/id/" + id) // Call the fetch function passing the url of the API as a parameter
     const data = await res.json()
-    console.log(data)
-    
+    this.setState({
+        restaurant_name: data.restaurant.restaurant_name
+    })
+  }
+
+  async getPhotos(id) {
+    const res = await fetch("http://localhost:5000/photos/restaurant/" + id) // Call the fetch function passing the url of the API as a parameter
+    const data = await res.json()
+    const photoLinks = data.photos.map(photo =>  photo.photo_path )
+    const photoIds = data.photos.reduce( (p,c) => (p[c.photo_path] = c.photo_id) && p, {})
+    this.setState({
+        photoLinks, 
+        photoIds
+    })
   }
 
   async submitPhotos(id) {
-
         var data = {
             user_id: this.props.url.query.id % 10,
             restaurant_id: this.props.url.query.id, 
@@ -60,17 +74,42 @@ export default class Restaurant extends Component {
         .then(response => console.log('Success:', response));
   }
 
+
+  deletePhoto = (url) => {
+    fetch("http://localhost:5000/photos/" + this.state.photoIds[url], {
+            method: 'DELETE', // or 'PUT'
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => console.log('Success:', response));
+  }
   
+  componentDidMount() {
+    this.setRestaurantName(this.props.url.query.id)
+  }
 
 
   render() {
     return (
       <div>
         <Nav />
-        <button onClick= {this.photos.bind(this, this.props.url.query.id)}>
+        <h2> {"Get photos from " + this.state.restaurant_name} </h2> 
+        <button onClick= {this.getPhotos.bind(this, this.props.url.query.id)}>
           Get Photos
         </button>
 
+        {this.state.photoLinks.map( url => 
+        <div key={url}> 
+           {url + "  "} 
+          <button onClick={() => this.deletePhoto(url)}>
+          x
+          </button>
+        </div> 
+      )}
+
+        <h2> Upload a Photo </h2> 
          <form>
             <div className="FileUpload">
               <Dropzone
@@ -90,11 +129,9 @@ export default class Restaurant extends Component {
             </div>
           </form>
 
-
         <button onClick= {this.submitPhotos.bind(this, this.props.url.query.id)}>
           Submit Photos
         </button>
-
 
       </div>
     );
