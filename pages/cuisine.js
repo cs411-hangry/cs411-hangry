@@ -10,7 +10,7 @@ export default class Cuisine extends Component {
 
     state = {
         restaurants: [],
-        restaurantsIds: []
+        restaurantsIds: [],
     }
 
     getRestuarants = async (id) => {
@@ -39,6 +39,7 @@ export default class Cuisine extends Component {
                 {this.state.restaurants.map( name => 
                     name
                 )} */}
+
                 {this.state.restaurants.map( name => 
                     <div> 
                         <Link key={name} href={"/restaurant?id=" + this.state.restaurantsIds[name]}>
