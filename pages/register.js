@@ -7,8 +7,9 @@ import React, {Component} from 'react';
 export default class Login extends Component {
 
     state = { 
-        username: '', 
-        password: '', 
+        username: '',
+        email: '', 
+        password: '',
         status: ''
     };
   
@@ -23,10 +24,15 @@ export default class Login extends Component {
 
         var data = {
             username: this.state.username, 
+            name: this.state.name,
+            email: this.state.email, 
             password: this.state.password, 
+            latitude: 0.0, 
+            longitude: 0.0
         };
 
-        fetch("http://localhost:5000/login", {
+        console.log(data)
+        fetch("http://localhost:5000/signup", {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), 
             headers: new Headers({
@@ -48,18 +54,33 @@ export default class Login extends Component {
                         Username
                         <input type="text" name="username" value={this.state.value} onChange={this.handleChange} />
                     </label>
-                </div>
+                
+                </div> 
 
-                <div>
+                <div> 
+                    <label>
+                        Name
+                        <input type="text" name="name" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                </div> 
+                
+                <div> 
+                    <label>
+                        Email
+                        <input type="text" name="email" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                </div> 
+
+                <div> 
                     <label>
                         Password
                         <input type="text" name="password" value={this.state.value} onChange={this.handleChange} />
                     </label>
-                </div>
-
+                </div> 
 
             <input type="submit" value="Submit" />
             </form>
+
             {this.state.status}
         </div>
       );

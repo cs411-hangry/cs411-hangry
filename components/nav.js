@@ -13,12 +13,19 @@ const Nav = () => (
 					<a>Login</a>
 				</Link>
 			</li>
+
+			<li>
+				<Link prefetch href="/register">
+					<a>Register</a>
+				</Link>
+			</li>
+      
 			<li>
 				<Link prefetch href="/restaurants">
 					<a>Restaurants</a>
 				</Link>
 			</li>
-      <li>
+			<li>
 				<Link prefetch href="/cuisines">
 					<a>Cuisines</a>
 				</Link>
