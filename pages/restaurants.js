@@ -1,0 +1,41 @@
+import Link from 'next/link'
+import Nav from '../components/nav'
+import request from 'superagent';
+import React, {Component, Button} from 'react';
+
+export default class Restaurants extends Component {
+
+  state = {
+    restaurants: {}, 
+    ids: [], 
+  };
+    
+  async users() {
+    const res = await fetch("http://localhost:5000/restaurants") // Call the fetch function passing the url of the API as a parameter
+    const data = await res.json()
+    const restaurants = data.restaurants.reduce( (p,c) => (p[c.restaurant_id] = c.restaurant_name) && p, {})
+    const ids = data.restaurants.map(restaurant => restaurant.restaurant_id)
+    this.setState({
+        restaurants,
+        ids
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <Nav />
+        <button onClick= {this.users.bind(this)}>
+          Get Restaurants
+        </button>
+
+        {this.state.ids.map( id => 
+        <Link key={id} prefetch href={"/restaurant?id=" + id}>
+          <a>{this.state.restaurants[id]}</a>
+        </Link>
+
+        )}
+      </div>
+    );
+  }
+}

@@ -9,15 +9,16 @@ const Nav = () => (
         </Link>
       </li>
       <li>
-        <Link prefetch href="/upload">
-          <a>Upload</a>
+        <Link prefetch href="/login">
+          <a>Login</a>
         </Link>
       </li>
       <li>
-        <Link prefetch href="/images">
-          <a>Users</a>
+        <Link prefetch href="/restaurants">
+          <a>Restaurants</a>
         </Link>
       </li>
+
     </ul>
 
     <style jsx>{`
