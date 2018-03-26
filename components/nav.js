@@ -18,6 +18,11 @@ const Nav = () => (
           <a>Users</a>
         </Link>
       </li>
+      <li>
+        <Link prefetch href="/search">
+          <a>Search</a>
+        </Link>
+      </li>
     </ul>
 
     <style jsx>{`
