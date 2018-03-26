@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-// import { DropdownButton, MenuItem } from 'react-bootstrap'
-// import './../styles/dropdown.css'
 
 class SearchBar extends Component {
-  // Dropdown title
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +23,6 @@ class SearchBar extends Component {
   render() {
     return (
         <div>
-        {/* <Nav /> */}
         <form onSubmit={this.handleSubmit}>
             <label>
                 Search {this.props.searchItem}:
