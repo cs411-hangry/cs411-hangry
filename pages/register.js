@@ -36,7 +36,8 @@ export default class Login extends Component {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), 
             headers: new Headers({
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
             })
         }).then(res => res.json())
         .catch(error => this.setState({status:"error"}))

@@ -38,7 +38,12 @@ export default class Restaurant extends Component {
     }
     
    setRestaurantName = async (id) => {
-    const res = await fetch("http://localhost:5000/restaurant/id/" + id) // Call the fetch function passing the url of the API as a parameter
+    const res = await fetch("http://localhost:5000/restaurant/id/" + id, 
+      {headers: {
+        'user-agent': 'Mozilla/4.0 MDN Example',
+        'content-type': 'application/json',
+        Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+      },}) 
     const data = await res.json()
     this.setState({
         restaurant_name: data.restaurant.restaurant_name
@@ -46,7 +51,11 @@ export default class Restaurant extends Component {
   }
 
   async getPhotos(id) {
-    const res = await fetch("http://localhost:5000/photos/restaurant/" + id) // Call the fetch function passing the url of the API as a parameter
+    const res = await fetch("http://localhost:5000/photos/restaurant/" + id, 
+    {headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+    },})
     const data = await res.json()
     const photoLinks = data.photos.map(photo =>  photo.photo_path )
     const photoIds = data.photos.reduce( (p,c) => (p[c.photo_path] = c.photo_id) && p, {})
@@ -67,7 +76,8 @@ export default class Restaurant extends Component {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), 
             headers: new Headers({
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
             })
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
@@ -79,7 +89,8 @@ export default class Restaurant extends Component {
     fetch("http://localhost:5000/photos/" + this.state.photoIds[url], {
             method: 'DELETE', // or 'PUT'
             headers: new Headers({
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`
             })
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))

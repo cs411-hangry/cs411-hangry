@@ -13,7 +13,11 @@ export default class Cusines extends Component {
   };
     
   async users() {
-    const res = await fetch("http://localhost:5000/cuisines") // Call the fetch function passing the url of the API as a parameter
+    const res = await fetch("http://localhost:5000/cuisines", 
+      {headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+      },});
     const data = await res.json()
     const cuisines = data.cuisines.map(cuisine => cuisine.cuisine_name)
     const cuisineIds = data.cuisines.reduce( (p,c) => (p[c.cuisine_name] = c.cuisine_id) && p, {})
@@ -40,7 +44,8 @@ export default class Cusines extends Component {
             method: 'PUT', // or 'PUT'
             body: JSON.stringify(data), 
             headers: new Headers({
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`
             })
         }).then(res => res.json())
         .catch(error => this.setState({status:"error"}))

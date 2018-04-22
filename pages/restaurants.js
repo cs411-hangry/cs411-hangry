@@ -11,7 +11,11 @@ export default class Restaurants extends Component {
   };
     
   async restaurants() {
-    const res = await fetch("http://localhost:5000/restaurants") // Call the fetch function passing the url of the API as a parameter
+    const res = await fetch("http://localhost:5000/restaurants", 
+      {headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+      },});
     const data = await res.json()
     const restaurants = data.restaurants.reduce( (p,c) => (p[c.restaurant_id] = c.restaurant_name) && p, {})
     const ids = data.restaurants.map(restaurant => restaurant.restaurant_id)

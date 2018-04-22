@@ -15,7 +15,12 @@ export default class Cuisine extends Component {
 
     getRestuarants = async (id) => {
         console.log(this.props.url.query.id)
-        const res =  await fetch("http://localhost:5000/serves/cuisine/" + this.props.url.query.id)
+        const res =  await fetch("http://localhost:5000/serves/cuisine/" + this.props.url.query.id, 
+            {headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+            },});
+        
         const data = await res.json()
         const restaurants = data.restaurants.map(r => r.restaurant_name)
         const restaurantsIds = data.restaurants.reduce( (p,c) => (p[c.restaurant_name] = c.restaurant_id) && p, {})

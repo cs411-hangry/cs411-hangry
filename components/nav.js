@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+function logout() {
+	sessionStorage.removeItem("jwt");
+}
+
+
 const Nav = () => (
 	<nav>
 		<ul>
@@ -29,6 +34,9 @@ const Nav = () => (
 				<Link prefetch href="/cuisines">
 					<a>Cuisines</a>
 				</Link>
+			</li>
+			<li>
+				<button onClick={logout}>Logout</button>
 			</li>
 
 		</ul>

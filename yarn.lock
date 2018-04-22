@@ -3678,10 +3678,6 @@ react-dropzone@^4.2.9:
     attr-accept "^1.0.3"
     prop-types "^15.5.7"
 
-react-geolocation@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-geolocation/-/react-geolocation-1.0.3.tgz#6a962d6b436561f34e5462121e69d68c9edf3d36"
-
 react-hot-loader@4.0.0-beta.18:
   version "4.0.0-beta.18"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.0.0-beta.18.tgz#5a3d1b5bd813633380b88c0c660019dbf638975d"

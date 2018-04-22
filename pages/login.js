@@ -9,7 +9,8 @@ export default class Login extends Component {
     state = { 
         username: '', 
         password: '', 
-        status: ''
+        status: '', 
+        token: ''
     };
   
     handleChange = (event) => {
@@ -18,7 +19,7 @@ export default class Login extends Component {
         });
     }
   
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
         var data = {
@@ -26,15 +27,20 @@ export default class Login extends Component {
             password: this.state.password, 
         };
 
-        fetch("http://localhost:5000/login", {
+        const loginRequest = await fetch("http://localhost:5000/login", {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), 
             headers: new Headers({
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`
             })
-        }).then(res => res.json())
-        .catch(error => this.setState({status:"error"}))
-        .then(response =>  this.setState({status:"success" + JSON.stringify(response)})  );
+        })
+        const jsonLoginData = await loginRequest.json()
+        console.log(jsonLoginData.token)
+        sessionStorage.setItem('jwt', jsonLoginData.token);
+        // .then(res => console.log(res.json()))
+        // .catch(error => this.setState({status:"error"}))
+        // .then(response =>  this.setState({status:"success" + response.json()  })  );
     }
   
     render() {
