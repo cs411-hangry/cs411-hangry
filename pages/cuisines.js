@@ -26,7 +26,6 @@ export default class Cusines extends Component {
       cuisines,
       cuisineIds
     });
-  
   };
 
   handleChange = (event) => {
@@ -73,6 +72,13 @@ export default class Cusines extends Component {
               <input type="submit" value="Update Cuisine Name"/>
           </div>
         </form>
+        {this.state.cuisines.map( food => 
+        <div> 
+            <Link key={food} href={"/cuisine?id=" + this.state.cuisineIds[food]}>
+                <a>{food}</a>
+            </Link>
+         </div>
+        )}
         {this.state.cuisines.map( food => 
         <div> 
             <Link key={food} href={"/cuisine?id=" + this.state.cuisineIds[food]}>
