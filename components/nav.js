@@ -47,6 +47,11 @@ const Nav = () => (
 				</Link>
 			</li>
 			<li>
+				<Link prefetch href="/leaderboard">
+					<a>Leaderboard</a>
+				</Link>
+			</li>
+			<li>
 				<button onClick={logout}>Logout</button>
 			</li>
 
