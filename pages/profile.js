@@ -36,6 +36,7 @@ export default class Profile extends Component {
             checkins: [], 
             checkinIds: {},
             ratings:[],
+            ratingIds: {},
             paths:[],
             locations: [{ lat: 40.1298, lng:-88.2582 }],
             filter: "all", 
@@ -46,8 +47,21 @@ export default class Profile extends Component {
 		
       }
       
-      async deleteCheckin(id) {
-        fetch("http://localhost:5000/checkin/id/" + id, {
+    async deleteCheckin(id) {
+    fetch("http://localhost:5000/checkin/id/" + id, {
+        method: 'DELETE', // or 'PUT'
+        headers: new Headers({
+            'Content-Type': 'application/json', 
+            Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`
+        })
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => this.checkins() );
+    
+    }
+
+    async deleteRating(id) {
+        fetch("http://localhost:5000/ratings/" + id, {
             method: 'DELETE', // or 'PUT'
             headers: new Headers({
                 'Content-Type': 'application/json', 
@@ -55,8 +69,7 @@ export default class Profile extends Component {
             })
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
-        .then(response => this.checkins() );
-        
+        .then(response => this.ratings() );
         }
 
 	async locations() {
@@ -74,11 +87,11 @@ export default class Profile extends Component {
         const checkinIds = data.checkins.reduce( (p,c) => (p[c.timestamp] = c.checkin_id) && p, {})     
         this.setState({
             checkins,
-            ratings:[],
             checkinIds,
             category: "checkins"
         }); 
     };
+
     
     async setFilter(f) {
         this.setState({
@@ -104,10 +117,12 @@ export default class Profile extends Component {
         const data = await res.json()
 
         const ratings = data.ratings.map(r => r.rating + " " + r.restaurant_name + " " + r.timestamp) 
-        console.log(ratings)
+        const ratingIds = data.ratings.reduce( (p,c) => (p[c.rating + " " + c.restaurant_name + " " + c.timestamp] = c.rating_id) && p, {})    
+        console.log(ratingIds)
         // console.log(paths)
         this.setState({
             ratings, 
+            ratingIds,
             category: "ratings"
         });
     };
@@ -167,7 +182,12 @@ export default class Profile extends Component {
         
            {this.state.category==="photos" && this.state.paths.map( (path, i) => <img src={path} height="300" width="300" />)}
           
-          {this.state.category==="ratings" && this.state.ratings.map( rating => <p> {rating}</p> )}
+          {this.state.category==="ratings" && this.state.ratings.map( rating => 
+            <div>
+                {rating}
+                <button onClick={() => this.deleteRating(this.state.ratingIds[rating])}> x </button>
+            </div> )
+        }
           
 
 		</div>
