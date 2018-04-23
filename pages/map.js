@@ -1,7 +1,5 @@
 import Link from "next/link";
 import Nav from "../components/nav";
-
-// AIzaSyCjAYqAYLMEADjHTaoRfCm2AvuRfkMgdhU
 import React, {Component} from 'react';
 import ReactDOM from "react-dom";
 import { compose, withProps } from "recompose";
@@ -11,8 +9,6 @@ import {
 	GoogleMap,
 	Marker
 } from "react-google-maps";
-
-const locations = [{ lat: -35.397, lng: 150.644 }, { lat: -34.397, lng: 150.644 }]
 
 const MyMapComponent =  compose(
 	withProps({
@@ -25,41 +21,14 @@ const MyMapComponent =  compose(
 	withScriptjs,
 	withGoogleMap
 )(props => (
-	<GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
-    {props.isMarkerShown &&  locations.map( l => 
+	<GoogleMap defaultZoom={12} defaultCenter={props.locations[0]}>
+    {props.isMarkerShown &&  props.locations.map( l => 
         <Marker position={l} />
     )}
 	</GoogleMap>
 ));
 
-
-// export default class Map extends Component {
-// 	render() {
-// 		return (
-// 			<div>
-// 				<Nav />
-//         	<MyMapComponent isMarkerShown />
-// 			<button onClick= {this.restaurants.bind(this)}>
-//           Get Restaurants
-//         </button>
-
-//         {this.state.ids.map( id => 
-//         	<div> 
-//             	<Link key={id} href={"/restaurant?id=" + id}>
-//                 	<a>{this.state.restaurants[id]}</a>
-//             	</Link>
-//          	</div>
-//         )}
-		
-
-// 			</div>
-// 		);
-// 	}
-// }
-
-
 export default class Map extends Component {
-
 
 	constructor(props) {
 		super(props);
@@ -68,10 +37,25 @@ export default class Map extends Component {
 			ids: [], 
 			cuisines: [],
 			cuisineIds: {},
-			locations: [],
+			locations: [{ lat: 40.1298, lng:-88.2582 }],
 		};
+		this.locations()
+		
 	  }
 
+	async locations() {
+		const res = await fetch("http://localhost:5000/locations/city/Champaign", 
+		{headers: {
+		  'content-type': 'application/json',
+		  Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+		},});
+	  	const data = await res.json()
+		const locations = data.locations.map(location => JSON.parse(JSON.stringify({ "lat": location.latitude, "lng": location.longitude })) )
+		this.setState({
+			locations
+		});
+
+	}
 	  
 	async restaurants() {
 	  const res = await fetch("http://localhost:5000/restaurants", 
@@ -86,30 +70,6 @@ export default class Map extends Component {
 		  restaurants,
 		  ids
 	  });
-	  const res2 = await fetch("http://localhost:5000/locations/city/Champaign", 
-		{headers: {
-		  'content-type': 'application/json',
-		  Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
-		},});
-	  const data2 = await res2.json()
-	//   [{ lat: -35.397, lng: 150.644 }, { lat: -34.397, lng: 150.644 }]
-	  const locations = data2.locations.map(location => JSON.parse(JSON.stringify({ "lat": location.latitude, "lng": location.longitude })) )
-	//   const longitude = data2.locations.map(location => location.longitude)
-	  console.log(locations)
-	//   my_locations = locations
-	  this.setState({
-		locations
-	});
-	//   console.log(longitude)
-	//   const restaurants = data.restaurants.reduce( (p,c) => (p[c.restaurant_id] = c.restaurant_name) && p, {})
-	//   const ids = data.restaurants.map(restaurant => restaurant.restaurant_id)
-	//   this.setState({
-	// 	  restaurants,
-	// 	  ids
-	//   });
-
-	//   const locations = data.restaurants.map(restaurant => restaurant)
-	//   console.log(locations)
 	};
   
 	async cusines() {
@@ -133,7 +93,7 @@ export default class Map extends Component {
 	  return (
 		<div>
 		  <Nav />
-		  <MyMapComponent isMarkerShown />
+		  <MyMapComponent isMarkerShown locations={this.state.locations}/>
 		  <button onClick= {this.restaurants.bind(this)}>
 			Get Restaurants
 		  </button>
