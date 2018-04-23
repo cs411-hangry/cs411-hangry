@@ -39,9 +39,6 @@ export default class LeaderBoard extends Component {
         <Nav />
         <h3> Hottest Restaurants </h3> 
         <h5> Based on your average rating and proximity to you </h5> 
-
-
-
         {this.state.restaurants.map( name => 
             <p> {name} </p>
 

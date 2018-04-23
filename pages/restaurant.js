@@ -9,13 +9,29 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/
 
 export default class Restaurant extends Component {
 
-    state = {
+    // state = {
+    //     uploadedFile: null,
+    //     uploadedFileCloudinaryUrl: '',
+    //     restaurant_name: '',
+    //     photoLinks: [], 
+    //     photoIds: {}
+    // };
+
+
+    constructor(props) {
+      super(props);
+      this.state = {
         uploadedFile: null,
         uploadedFileCloudinaryUrl: '',
         restaurant_name: '',
         photoLinks: [], 
         photoIds: {}
-    };
+      };
+      this.setRestaurantName();
+      this.getPhotos(this.props.url.query.id)
+
+		
+	  }
   
     onImageDrop(files) {
       this.setState({
@@ -89,13 +105,14 @@ export default class Restaurant extends Component {
       <div>
         <Nav />
         <h2> {"Get photos from " + this.state.restaurant_name} </h2> 
-        <button onClick= {this.getPhotos.bind(this, this.props.url.query.id)}>
+        {/* <button onClick= {this.getPhotos.bind(this, this.props.url.query.id)}>
           Get Photos
-        </button>
+        </button> */}
+        
 
         {this.state.photoLinks.map( url => 
         <div key={url}> 
-           {url + "  "} 
+           <img src={url} />
           <button onClick={() => this.deletePhoto(url)}>
           x
           </button>

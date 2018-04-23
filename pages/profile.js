@@ -33,7 +33,8 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			checkins: [], 
+            checkins: [], 
+            checkinIds: {},
             ratings:[],
             paths:[],
             locations: [{ lat: 40.1298, lng:-88.2582 }],
@@ -43,48 +44,40 @@ export default class Profile extends Component {
         this.locations()
         this.checkins()
 		
-	  }
+      }
+      
+      async deleteCheckin(id) {
+        fetch("http://localhost:5000/checkin/id/" + id, {
+            method: 'DELETE', // or 'PUT'
+            headers: new Headers({
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`
+            })
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => this.checkins() );
+        
+        }
 
 	async locations() {
-        console.log('hi')
-		const res = await fetch("http://localhost:5000/checkin/id/" + "1");
+		const res = await fetch("http://localhost:5000/checkin/location/" + "1");
         const data = await res.json()
-        // const timestamps = data.checkins.map( l => l.timestamp)
-        // console.log( new Date(timestamps[0]).getHours())
-        // console.log( new Date(timestamps[1]).getHours())
-
-
-        const test = data.checkins.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "all" )
-        console.log(test)
-       
-
-        const locationIds = test.map( l => l.location_id)
-       
-        let locations = []
-        await Promise.all(locationIds.map(async (locationId) => {
-            // console.log(locationId)
-            const resp =  await fetch("http://localhost:5000/locations/id/" + locationId); 
-            const data_parsed = await resp.json()
-            locations.push(JSON.parse(JSON.stringify({ "lat": data_parsed.locations[0].latitude, "lng": data_parsed.locations[0].longitude })))
-            }))
-        this.setState({
-            locations
-        });
+        const test = data.locations.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "all" )
+        const locations = test.map( l => JSON.parse(JSON.stringify({ "lat": l.latitude, "lng": l.longitude })))
+        this.setState({ locations });
 	}
 	  
 	async checkins() {
         const res = await fetch("http://localhost:5000/checkin/id/" + "1");
         const data = await res.json()
-        console.log(data.checkins)
         const checkins = data.checkins.map(c => c.timestamp)
-        // console.log(checkins)
-        
-	  this.setState({
-		  checkins,
-          ratings:[],
-          category: "checkins"
-      });
-      
+        const checkinIds = data.checkins.reduce( (p,c) => (p[c.timestamp] = c.checkin_id) && p, {})     
+        this.setState({
+            checkins,
+            ratings:[],
+            checkinIds,
+            category: "checkins"
+        }); 
     };
     
     async setFilter(f) {
@@ -105,6 +98,7 @@ export default class Profile extends Component {
         });
     };
 
+    
     async ratings() {
         const res = await fetch("http://localhost:5000/ratings/user/" + "1");
         const data = await res.json()
@@ -117,6 +111,8 @@ export default class Profile extends Component {
             category: "ratings"
         });
     };
+
+    
 
 
 
@@ -151,6 +147,7 @@ export default class Profile extends Component {
           <button onClick= {this.setFilter.bind(this,23)}>11pm</button>
           <button onClick= {this.setFilter.bind(this,"all")}>all</button>    
 
+            <p> </p> 
           <button onClick= {this.checkins.bind(this)}>
 			My Checkins
 		  </button>
@@ -160,9 +157,15 @@ export default class Profile extends Component {
           <button onClick= {this.ratings.bind(this)}>
 			My Ratings
 		  </button>
-          {this.state.category==="checkins" &&  this.state.checkins.map( (ts, i) => <p key={i}> {ts} </p> )}
-            <p> </p>
-           {this.state.category==="photos" && this.state.paths.map( (path, i) => <img src={path} height="50%" width="50%" />)}
+          <p> </p>
+          {this.state.category==="checkins" &&  this.state.checkins.map( (ts, i) => 
+            <div>
+                {ts}
+                <button onClick={() => this.deleteCheckin(this.state.checkinIds[ts])}> x </button>
+            </div>
+          )}
+        
+           {this.state.category==="photos" && this.state.paths.map( (path, i) => <img src={path} height="300" width="300" />)}
           
           {this.state.category==="ratings" && this.state.ratings.map( rating => <p> {rating}</p> )}
           

@@ -23,6 +23,15 @@ export default class Upload extends Component {
         uploadedFile: files[0]
       });
 
+      // cloudinary.config({ 
+      //   cloud_name: 'sample', 
+      //   api_key: '874837483274837', 
+      //   api_secret: 'a676b67565c6767a6767d6767f676fe1' 
+      // });
+      //  See Configuration options for more details and additional configuration methods.
+      
+      
+
       console.log(files[0])
       let upload = request.post(CLOUDINARY_UPLOAD_URL)
                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
