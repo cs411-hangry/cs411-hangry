@@ -91,25 +91,13 @@ export default class Map extends Component {
 	  };
 
 	async getCusinesRestrauants(food) {
-		  const res =  await fetch("http://localhost:5000/serves/cuisine/" + this.state.cuisineIds[food], 
+		  const res =  await fetch("http://localhost:5000/locations/cuisine/" + this.state.cuisineIds[food], 
             {headers: {
             'content-type': 'application/json',
             Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
 			},});
 			const restaurants = await res.json()
-			const restaurantIds = restaurants.restaurants.map( r => r.restaurant_id)
-			let locations = []
-			await Promise.all(restaurantIds.map(async (restaurantId) => {
-				console.log(restaurantId)
-				const resp =  await fetch("http://localhost:5000/locations/restaurant/" + restaurantId, 
-					{headers: {
-					'content-type': 'application/json',
-					Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
-				},});
-				const data_parsed = await resp.json()
-				console.log(data_parsed.locations[0].latitude)
-				locations.push(JSON.parse(JSON.stringify({ "lat": data_parsed.locations[0].latitude, "lng": data_parsed.locations[0].longitude })))
-			}));
+			const locations = restaurants.locations.map(r => JSON.parse(JSON.stringify({ "lat": r.latitude, "lng": r.longitude })))
 			this.setState({
 				locations
 			});

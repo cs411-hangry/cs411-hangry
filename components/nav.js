@@ -37,11 +37,6 @@ const Nav = () => (
 				</Link>
 			</li>
 			<li>
-				<Link prefetch href="/cuisines">
-					<a>Cuisines</a>
-				</Link>
-			</li>
-			<li>
 				<Link prefetch href="/map">
 					<a>Map</a>
 				</Link>

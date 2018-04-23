@@ -34,9 +34,11 @@ export default class Profile extends Component {
 		super(props);
 		this.state = {
 			checkins: [], 
-			ratings:[],
+            ratings:[],
+            paths:[],
             locations: [{ lat: 40.1298, lng:-88.2582 }],
-            filter: "NONE"
+            filter: "all", 
+            category: "none"
 		};
         this.locations()
         this.checkins()
@@ -52,7 +54,7 @@ export default class Profile extends Component {
         // console.log( new Date(timestamps[1]).getHours())
 
 
-        const test = data.checkins.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "NONE" )
+        const test = data.checkins.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "all" )
         console.log(test)
        
 
@@ -79,7 +81,8 @@ export default class Profile extends Component {
         
 	  this.setState({
 		  checkins,
-		  ratings:[],
+          ratings:[],
+          category: "checkins"
       });
       
     };
@@ -91,6 +94,30 @@ export default class Profile extends Component {
         this.locations()
     }
   
+    async photos() {
+        const res = await fetch("http://localhost:5000/photos/user/" + "1");
+        const data = await res.json()
+        const paths = data.photos.map(p => p.photo_path)
+        console.log(paths)
+        this.setState({
+            paths, 
+            category: "photos"
+        });
+    };
+
+    async ratings() {
+        const res = await fetch("http://localhost:5000/ratings/user/" + "1");
+        const data = await res.json()
+
+        const ratings = data.ratings.map(r => r.rating + " " + r.restaurant_name + " " + r.timestamp) 
+        console.log(ratings)
+        // console.log(paths)
+        this.setState({
+            ratings, 
+            category: "ratings"
+        });
+    };
+
 
 
 	render() {
@@ -122,21 +149,23 @@ export default class Profile extends Component {
           <button onClick= {this.setFilter.bind(this,21)}>9pm</button>
           <button onClick= {this.setFilter.bind(this,22)}>10pm</button>
           <button onClick= {this.setFilter.bind(this,23)}>11pm</button>
-          <button onClick= {this.setFilter.bind(this,"NONE")}>all</button>
-
-
-    
+          <button onClick= {this.setFilter.bind(this,"all")}>all</button>    
 
           <button onClick= {this.checkins.bind(this)}>
 			My Checkins
 		  </button>
-          <button onClick= {this.checkins.bind(this)}>
+          <button onClick= {this.photos.bind(this)}>
 			My Photos
 		  </button>
-          <button onClick= {this.checkins.bind(this)}>
+          <button onClick= {this.ratings.bind(this)}>
 			My Ratings
 		  </button>
-          {this.state.checkins.map( (ts, i) => <p key={i}> {ts} </p> )}
+          {this.state.category==="checkins" &&  this.state.checkins.map( (ts, i) => <p key={i}> {ts} </p> )}
+            <p> </p>
+           {this.state.category==="photos" && this.state.paths.map( (path, i) => <img src={path} height="50%" width="50%" />)}
+          
+          {this.state.category==="ratings" && this.state.ratings.map( rating => <p> {rating}</p> )}
+          
 
 		</div>
 	  );

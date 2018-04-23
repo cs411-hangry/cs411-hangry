@@ -10,7 +10,7 @@ export default class LeaderBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        restaurants: {}, 
+        restaurants: [], 
         ids: [], 
     };
     this.hottest()
@@ -25,7 +25,12 @@ export default class LeaderBoard extends Component {
       },});
     const data = await res.json()
     console.log(data)
+    const restaurants = data.restaurants.map(d => d.restaurant_name + " " + String(d.avg).substring(0,4) )
 
+    this.setState({
+        restaurants
+    })
+    (this.state.restaurants.map(name => console.log(name)))
   };
 
   render() {
@@ -33,16 +38,12 @@ export default class LeaderBoard extends Component {
       <div>
         <Nav />
         <h3> Hottest Restaurants </h3> 
-        <h5> Based on your checkins </h5> 
+        <h5> Based on your average rating and proximity to you </h5> 
 
 
 
-        {this.state.ids.map( id => 
-        <div> 
-            <Link key={id} href={"/upload?id=" + id}>
-                <a>{this.state.restaurants[id]}</a>
-            </Link>
-         </div>
+        {this.state.restaurants.map( name => 
+            <p> {name} </p>
 
         )}
       </div>
