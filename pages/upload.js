@@ -4,10 +4,11 @@ import request from 'superagent';
 import React, {Component, Button} from 'react';
 import Dropzone from 'react-dropzone';
 
+
 const CLOUDINARY_UPLOAD_PRESET = 'bmzjbxoq';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/upload';
 
-export default class Restaurant extends Component {
+export default class Upload extends Component {
 
     state = {
         uploadedFile: null,
@@ -64,7 +65,24 @@ export default class Restaurant extends Component {
     })
   }
 
+  async submitPhotos(id) {
+        var data = {
+            user_id: this.props.url.query.id % 10,
+            restaurant_id: this.props.url.query.id, 
+            image_url: this.state.uploadedFileCloudinaryUrl, 
+        };
 
+      fetch("http://localhost:5000/photos", {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), 
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+            })
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => console.log('Success:', response));
+  }
 
 
   deletePhoto = (url) => {
@@ -101,6 +119,30 @@ export default class Restaurant extends Component {
           </button>
         </div> 
       )}
+
+        <h2> Upload a Photo </h2> 
+         <form>
+            <div className="FileUpload">
+              <Dropzone
+                onDrop={this.onImageDrop.bind(this)}
+                multiple={false}
+                accept="image/*">
+                <div>Drop an image or click to select a file to upload.</div>
+              </Dropzone>
+            </div>
+    
+            <div>
+              {this.state.uploadedFileCloudinaryUrl === '' ? null :
+              <div>
+                <p>{this.state.uploadedFile.name}</p>
+                <img src={this.state.uploadedFileCloudinaryUrl} />
+              </div>}
+            </div>
+          </form>
+
+        <button onClick= {this.submitPhotos.bind(this, this.props.url.query.id)}>
+          Submit Photos
+        </button>
 
       </div>
     );

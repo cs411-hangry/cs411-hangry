@@ -135,15 +135,11 @@ export default class Map extends Component {
 		   </div>
 		  )}
 
-		  
 		  {this.state.cuisines.map( food => 
-        <div> 
-            <button onClick={this.getCusinesRestrauants.bind(this, food)}>{food}</button>
-         </div>
-
-        )}
-
-
+			<div> 
+				<button onClick={this.getCusinesRestrauants.bind(this, food)}>{food}</button>
+			</div>
+        	)}
 		</div>
 	  );
 	}

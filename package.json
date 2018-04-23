@@ -10,11 +10,16 @@
     "next": "^5.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
+    "react-bootstrap": "^0.32.1",
+    "react-context-form": "^2.5.0",
     "react-dom": "^16.3.2",
     "react-dropzone": "^4.2.9",
     "react-google-maps": "^9.4.5",
     "react-router": "^4.2.0",
-    "superagent": "^3.8.2"
+    "react-semantic-form": "^0.1.2",
+    "semantic-ui-react": "^0.79.1",
+    "superagent": "^3.8.2",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
