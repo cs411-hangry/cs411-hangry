@@ -130,6 +130,12 @@ export default class Profile extends Component {
           <button onClick= {this.checkins.bind(this)}>
 			My Checkins
 		  </button>
+          <button onClick= {this.checkins.bind(this)}>
+			My Photos
+		  </button>
+          <button onClick= {this.checkins.bind(this)}>
+			My Ratings
+		  </button>
           {this.state.checkins.map( (ts, i) => <p key={i}> {ts} </p> )}
 
 		</div>
