@@ -68,7 +68,8 @@ export default class Map extends Component {
 	  const ids = data.restaurants.map(restaurant => restaurant.restaurant_id)
 	  this.setState({
 		  restaurants,
-		  ids
+		  ids, 
+		  cuisines:[],
 	  });
 	};
   
@@ -84,10 +85,35 @@ export default class Map extends Component {
 		console.log(cuisines)
 		this.setState({
 		  cuisines,
-		  cuisineIds
+		  cuisineIds,
+		  restaurants:[],
 		});
 	  };
 
+	async getCusinesRestrauants(food) {
+		  const res =  await fetch("http://localhost:5000/serves/cuisine/" + this.state.cuisineIds[food], 
+            {headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+			},});
+			const restaurants = await res.json()
+			const restaurantIds = restaurants.restaurants.map( r => r.restaurant_id)
+			let locations = []
+			await Promise.all(restaurantIds.map(async (restaurantId) => {
+				console.log(restaurantId)
+				const resp =  await fetch("http://localhost:5000/locations/restaurant/" + restaurantId, 
+					{headers: {
+					'content-type': 'application/json',
+					Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+				},});
+				const data_parsed = await resp.json()
+				console.log(data_parsed.locations[0].latitude)
+				locations.push(JSON.parse(JSON.stringify({ "lat": data_parsed.locations[0].latitude, "lng": data_parsed.locations[0].longitude })))
+			}));
+			this.setState({
+				locations
+			});
+	}
 
 	render() {
 	  return (
@@ -96,6 +122,9 @@ export default class Map extends Component {
 		  <MyMapComponent isMarkerShown locations={this.state.locations}/>
 		  <button onClick= {this.restaurants.bind(this)}>
 			Get Restaurants
+		  </button>
+		  <button onClick= {this.cusines.bind(this)}>
+			Get Cuisnes
 		  </button>
   
 		  {this.state.ids.map( id => 
@@ -106,14 +135,10 @@ export default class Map extends Component {
 		   </div>
 		  )}
 
-		  <button onClick= {this.cusines.bind(this)}>
-			Get Cuisnes
-		  </button>
+		  
 		  {this.state.cuisines.map( food => 
         <div> 
-            <Link key={food} href={"/cuisine?id=" + this.state.cuisineIds[food]}>
-                <a>{food}</a>
-            </Link>
+            <button onClick={this.getCusinesRestrauants.bind(this, food)}>{food}</button>
          </div>
 
         )}
