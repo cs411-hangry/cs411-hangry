@@ -5,7 +5,7 @@ import React, {Component, Button} from 'react';
 import Dropzone from 'react-dropzone';
 
 
-const CLOUDINARY_UPLOAD_PRESET = 'bmzjbxoq';
+const CLOUDINARY_UPLOAD_PRESET = 'x2gliq49';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/upload';
 
 export default class Upload extends Component {
@@ -23,6 +23,7 @@ export default class Upload extends Component {
         uploadedFile: files[0]
       });
 
+      console.log(files[0])
       let upload = request.post(CLOUDINARY_UPLOAD_URL)
                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
                        .field('file', files[0]);

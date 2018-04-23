@@ -35,9 +35,11 @@ export default class Profile extends Component {
 		this.state = {
 			checkins: [], 
 			ratings:[],
-			locations: [{ lat: 40.1298, lng:-88.2582 }],
+            locations: [{ lat: 40.1298, lng:-88.2582 }],
+            filter: "NONE"
 		};
-		this.locations()
+        this.locations()
+        this.checkins()
 		
 	  }
 
@@ -45,10 +47,20 @@ export default class Profile extends Component {
         console.log('hi')
 		const res = await fetch("http://localhost:5000/checkin/id/" + "1");
         const data = await res.json()
-        const locationIds = data.checkins.map( l => l.location_id)
+        // const timestamps = data.checkins.map( l => l.timestamp)
+        // console.log( new Date(timestamps[0]).getHours())
+        // console.log( new Date(timestamps[1]).getHours())
+
+
+        const test = data.checkins.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "NONE" )
+        console.log(test)
+       
+
+        const locationIds = test.map( l => l.location_id)
+       
         let locations = []
         await Promise.all(locationIds.map(async (locationId) => {
-            console.log(locationId)
+            // console.log(locationId)
             const resp =  await fetch("http://localhost:5000/locations/id/" + locationId); 
             const data_parsed = await resp.json()
             locations.push(JSON.parse(JSON.stringify({ "lat": data_parsed.locations[0].latitude, "lng": data_parsed.locations[0].longitude })))
@@ -68,8 +80,16 @@ export default class Profile extends Component {
 	  this.setState({
 		  checkins,
 		  ratings:[],
-	  });
-	};
+      });
+      
+    };
+    
+    async setFilter(f) {
+        this.setState({
+            filter: f
+        });
+        this.locations()
+    }
   
 
 
@@ -78,6 +98,35 @@ export default class Profile extends Component {
 		<div>
 		  <Nav />
 		  <MyMapComponent isMarkerShown locations={this.state.locations}/>
+          <button onClick= {this.setFilter.bind(this,0)}>12am</button>
+          <button onClick= {this.setFilter.bind(this,1)}>1am</button>
+          <button onClick= {this.setFilter.bind(this,2)}>2am</button>
+          <button onClick= {this.setFilter.bind(this,3)}>3am</button>
+          <button onClick= {this.setFilter.bind(this,4)}>4am</button>
+          <button onClick= {this.setFilter.bind(this,5)}>5am</button>
+          <button onClick= {this.setFilter.bind(this,6)}>6am</button>
+          <button onClick= {this.setFilter.bind(this,7)}>7am</button>
+          <button onClick= {this.setFilter.bind(this,8)}>8am</button>
+          <button onClick= {this.setFilter.bind(this,9)}>9am</button>
+          <button onClick= {this.setFilter.bind(this,10)}>10am</button>
+          <button onClick= {this.setFilter.bind(this,11)}>11am</button>
+          <button onClick= {this.setFilter.bind(this,12)}>12pm</button>
+          <button onClick= {this.setFilter.bind(this,13)}>1pm</button>
+          <button onClick= {this.setFilter.bind(this,14)}>2pm</button>
+          <button onClick= {this.setFilter.bind(this,15)}>3pm</button>
+          <button onClick= {this.setFilter.bind(this,16)}>4pm</button>
+          <button onClick= {this.setFilter.bind(this,17)}>5pm</button>
+          <button onClick= {this.setFilter.bind(this,18)}>6pm</button>
+          <button onClick= {this.setFilter.bind(this,19)}>7pm</button>
+          <button onClick= {this.setFilter.bind(this,20)}>8pm</button>
+          <button onClick= {this.setFilter.bind(this,21)}>9pm</button>
+          <button onClick= {this.setFilter.bind(this,22)}>10pm</button>
+          <button onClick= {this.setFilter.bind(this,23)}>11pm</button>
+          <button onClick= {this.setFilter.bind(this,"NONE")}>all</button>
+
+
+    
+
           <button onClick= {this.checkins.bind(this)}>
 			My Checkins
 		  </button>
