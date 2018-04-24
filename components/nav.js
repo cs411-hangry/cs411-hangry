@@ -43,7 +43,12 @@ const Nav = () => (
 			</li>
 			<li>
 				<Link prefetch href="/leaderboard">
-					<a>Leaderboard</a>
+					<a>Trending</a>
+				</Link>
+			</li>
+			<li>
+				<Link prefetch href="/cuisineleaderboard">
+					<a>Cuisine Leaderboard</a>
 				</Link>
 			</li>
 			<li>

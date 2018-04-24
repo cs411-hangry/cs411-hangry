@@ -40,8 +40,9 @@ export default class Profile extends Component {
             paths:[],
             locations: [{ lat: 40.1298, lng:-88.2582 }],
             filter: "all", 
-            category: "none"
-		};
+            category: "none",
+            rating: 5
+        };
         this.locations()
         this.checkins()
 		
@@ -73,7 +74,7 @@ export default class Profile extends Component {
         }
 
 	async locations() {
-		const res = await fetch("http://localhost:5000/checkin/location/" + "1");
+		const res = await fetch("http://localhost:5000/checkin/location/" + sessionStorage.getItem('id'));
         const data = await res.json()
         const test = data.locations.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "all" )
         const locations = test.map( l => JSON.parse(JSON.stringify({ "lat": l.latitude, "lng": l.longitude })))
@@ -81,7 +82,7 @@ export default class Profile extends Component {
 	}
 	  
 	async checkins() {
-        const res = await fetch("http://localhost:5000/checkin/id/" + "1");
+        const res = await fetch("http://localhost:5000/checkin/id/" + sessionStorage.getItem('id'));
         const data = await res.json()
         const checkins = data.checkins.map(c => c.timestamp)
         const checkinIds = data.checkins.reduce( (p,c) => (p[c.timestamp] = c.checkin_id) && p, {})     
@@ -101,7 +102,7 @@ export default class Profile extends Component {
     }
   
     async photos() {
-        const res = await fetch("http://localhost:5000/photos/user/" + "1");
+        const res = await fetch("http://localhost:5000/photos/user/" + sessionStorage.getItem('id'));
         const data = await res.json()
         const paths = data.photos.map(p => p.photo_path)
         console.log(paths)
@@ -113,7 +114,7 @@ export default class Profile extends Component {
 
     
     async ratings() {
-        const res = await fetch("http://localhost:5000/ratings/user/" + "1");
+        const res = await fetch("http://localhost:5000/ratings/user/" + sessionStorage.getItem('id'));
         const data = await res.json()
 
         const ratings = data.ratings.map(r => r.rating + " " + r.restaurant_name + " " + r.timestamp) 
@@ -127,9 +128,25 @@ export default class Profile extends Component {
         });
     };
 
-    
+    async handleChange(event) {
+        await this.setState({rating: event.target.value});
+        console.log('rating is now', this.state.rating)
+    }
 
-
+    async updateRating(ratingId, rating) {
+        fetch("http://localhost:5000/ratings/" + ratingId + "/" + rating, {
+            method: 'PUT', // or 'PUT'
+            headers: new Headers({
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`
+            })
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+            console.log(response) 
+            this.ratings()
+        });
+        }
 
 	render() {
 	  return (
@@ -186,6 +203,19 @@ export default class Profile extends Component {
             <div>
                 {rating}
                 <button onClick={() => this.deleteRating(this.state.ratingIds[rating])}> x </button>
+                {/* <form onSubmit={() => this.handleSubmit.bind(this)}> */}
+                    <label>
+                    Update your rating for this visit:
+                    <select value={this.state.rating} onChange={this.handleChange.bind(this)}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    </label>
+                    <button onClick={() => this.updateRating(this.state.ratingIds[rating], this.state.rating)} > submit </button>
+                {/* </form> */}
             </div> )
         }
           

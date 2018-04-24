@@ -36,11 +36,22 @@ export default class Login extends Component {
             })
         })
         const jsonLoginData = await loginRequest.json()
-        console.log(jsonLoginData.token)
+        console.log(jsonLoginData)
         sessionStorage.setItem('jwt', jsonLoginData.token);
         // .then(res => console.log(res.json()))
         // .catch(error => this.setState({status:"error"}))
         // .then(response =>  this.setState({status:"success" + response.json()  })  );
+        // http://localhost:5000/user/username/abdi
+        const res2 = await fetch("http://localhost:5000/user/username/" + jsonLoginData.username, 
+		  {headers: {
+			'content-type': 'application/json',
+			Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+          },});
+          const data2 = await res2.json()
+          sessionStorage.setItem('id', data2.user.user_id);
+
+          
+        
     }
   
     render() {
