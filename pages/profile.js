@@ -74,15 +74,16 @@ export default class Profile extends Component {
         }
 
 	async locations() {
-		const res = await fetch("http://localhost:5000/checkin/location/" + sessionStorage.getItem('id'));
+		const res = await fetch("http://localhost:5000/checkin/location/" + "1");
         const data = await res.json()
         const test = data.locations.filter(l =>  new Date(l.timestamp).getHours() === this.state.filter ||this.state.filter === "all" )
         const locations = test.map( l => JSON.parse(JSON.stringify({ "lat": l.latitude, "lng": l.longitude })))
         this.setState({ locations });
+        console.log(this.state.locations)
 	}
 	  
 	async checkins() {
-        const res = await fetch("http://localhost:5000/checkin/id/" + sessionStorage.getItem('id'));
+        const res = await fetch("http://localhost:5000/checkin/id/" + "1");
         const data = await res.json()
         const checkins = data.checkins.map(c => c.timestamp)
         const checkinIds = data.checkins.reduce( (p,c) => (p[c.timestamp] = c.checkin_id) && p, {})     
@@ -102,7 +103,7 @@ export default class Profile extends Component {
     }
   
     async photos() {
-        const res = await fetch("http://localhost:5000/photos/user/" + sessionStorage.getItem('id'));
+        const res = await fetch("http://localhost:5000/photos/user/" + "1");
         const data = await res.json()
         const paths = data.photos.map(p => p.photo_path)
         console.log(paths)
@@ -114,7 +115,7 @@ export default class Profile extends Component {
 
     
     async ratings() {
-        const res = await fetch("http://localhost:5000/ratings/user/" + sessionStorage.getItem('id'));
+        const res = await fetch("http://localhost:5000/ratings/user/" + "1");
         const data = await res.json()
 
         const ratings = data.ratings.map(r => r.rating + " " + r.restaurant_name + " " + r.timestamp) 

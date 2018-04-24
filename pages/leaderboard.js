@@ -18,7 +18,7 @@ export default class LeaderBoard extends Component {
   }
     
   async hottest() {
-    const res = await fetch("http://localhost:5000/leaderboard/hot/" + sessionStorage.getItem('id'), 
+    const res = await fetch("http://localhost:5000/leaderboard/hot/" + "1", 
       {headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,

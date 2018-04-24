@@ -40,7 +40,7 @@ export default class cuisineleaderboard extends Component {
         cuisine_id: this.state.cuisineIds[cuisine], 
         num_days: this.state.day, 
       };
-      const res = await fetch("http://localhost:5000/leaderboard/top/" + sessionStorage.getItem('id'), {
+      const res = await fetch("http://localhost:5000/leaderboard/top/" + "1", {
         method: 'POST', 
         body: JSON.stringify(data), 
         headers: new Headers({
