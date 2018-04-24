@@ -12,19 +12,7 @@ const Nav = () => (
 				<Link prefetch href="/">
 					<a>Home</a>
 				</Link>
-			</li>
-			<li>
-				<Link prefetch href="/login">
-					<a>Login</a>
-				</Link>
-			</li>
-
-			<li>
-				<Link prefetch href="/register">
-					<a>Register</a>
-				</Link>
-			</li>
-      
+			</li>  
 			<li>
 				<Link prefetch href="/restaurants">
 					<a>Check In</a>
@@ -51,9 +39,9 @@ const Nav = () => (
 					<a>Cuisine Leaderboard</a>
 				</Link>
 			</li>
-			<li>
-				<button onClick={logout}>Logout</button>
-			</li>
+			<Link href={"/" }>
+					<button onClick={logout}>Logout</button>
+			  </Link>
 
 		</ul>
 

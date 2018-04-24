@@ -14,7 +14,6 @@ export default class Cuisine extends Component {
     }
 
     getRestuarants = async (id) => {
-        console.log(this.props.url.query.id)
         const res =  await fetch("http://localhost:5000/serves/cuisine/" + this.props.url.query.id, 
             {headers: {
             'content-type': 'application/json',
@@ -24,12 +23,10 @@ export default class Cuisine extends Component {
         const data = await res.json()
         const restaurants = data.restaurants.map(r => r.restaurant_name)
         const restaurantsIds = data.restaurants.reduce( (p,c) => (p[c.restaurant_name] = c.restaurant_id) && p, {})
-        console.log(restaurantsIds)
         this.setState({
             restaurants,
             restaurantsIds
         })
-        // console.log(this.state.restaurants)
       }
     
     componentDidMount() {
@@ -40,10 +37,6 @@ export default class Cuisine extends Component {
 		return (
 			<div>
 				<Nav />
-                {/* {this.props.url.query.id}
-                {this.state.restaurants.map( name => 
-                    name
-                )} */}
 
                 {this.state.restaurants.map( name => 
                     <div> 

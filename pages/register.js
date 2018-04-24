@@ -19,7 +19,7 @@ export default class Login extends Component {
         });
     }
   
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
         var data = {
@@ -32,22 +32,73 @@ export default class Login extends Component {
         };
 
         console.log(data)
-        fetch("http://localhost:5000/signup", {
+        const data2 = await fetch("http://localhost:5000/signup", {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), 
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
             })
-        }).then(res => res.json())
-        .catch(error => this.setState({status:"error"}))
-        .then(response =>  this.setState({status:"success" + JSON.stringify(response)})  );
+        });
+        const jsonOutput = await data2.json();
+        // .catch(error => this.setState({status:"error"}))
+        // .then(response =>  this.setState({status:"success" + JSON.stringify(response)})  );
+
+        const res2 = await fetch("http://localhost:5000/user/username/" + jsonOutput.username, 
+		  {headers: {
+			'content-type': 'application/json',
+			Authorization: `Bearer ${  sessionStorage.getItem('jwt')}`,
+          },});
+          const data3 = await res2.json()
+          sessionStorage.setItem('id', data3.user.user_id);
+          console.log(data3.user.user_id)
+
     }
   
     render() {
       return (
         <div>  
-            <Nav />    
+            {/* <Nav />     */}
+            <nav>
+			<ul>
+				<li>
+					<Link prefetch href="/">
+						<a>Home</a>
+					</Link>
+				</li>
+				<li>
+					<Link prefetch href="/login">
+						<a>Login</a>
+					</Link>
+				</li>
+
+				<li>
+					<Link prefetch href="/register">
+						<a>Register</a>
+					</Link>
+				</li>
+			</ul> 
+			<style jsx>{`
+			:global(body) {
+			margin: 0;
+			font-family: -apple-system,BlinkMacSystemFont,Avenir Next,Avenir,Helvetica,sans-serif;
+			}
+			li {
+			display: flex;
+			padding: 6px 8px;
+			}
+			ul li{
+			display: inline;
+			}
+			a {
+			color: #067df7;
+			text-decoration: none;
+			font-size: 13px;
+			}
+			`}</style>
+			</nav>
+
+	
             <form onSubmit={this.handleSubmit}>
 
                 <div> 
@@ -79,7 +130,11 @@ export default class Login extends Component {
                     </label>
                 </div> 
 
-            <input type="submit" value="Submit" />
+
+            <Link href={"/map" }>
+                  <input type="submit" value="Submit" />
+			  </Link>
+
             </form>
 
             {this.state.status}

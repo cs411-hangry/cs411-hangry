@@ -38,10 +38,7 @@ export default class Login extends Component {
         const jsonLoginData = await loginRequest.json()
         console.log(jsonLoginData)
         sessionStorage.setItem('jwt', jsonLoginData.token);
-        // .then(res => console.log(res.json()))
-        // .catch(error => this.setState({status:"error"}))
-        // .then(response =>  this.setState({status:"success" + response.json()  })  );
-        // http://localhost:5000/user/username/abdi
+
         const res2 = await fetch("http://localhost:5000/user/username/" + jsonLoginData.username, 
 		  {headers: {
 			'content-type': 'application/json',
@@ -50,6 +47,8 @@ export default class Login extends Component {
           const data2 = await res2.json()
           sessionStorage.setItem('id', data2.user.user_id);
 
+
+
           
         
     }
@@ -57,7 +56,47 @@ export default class Login extends Component {
     render() {
       return (
         <div>  
-            <Nav />    
+            {/* <Nav />     */}
+            <nav>
+			<ul>
+				<li>
+					<Link prefetch href="/">
+						<a>Home</a>
+					</Link>
+				</li>
+				<li>
+					<Link prefetch href="/login">
+						<a>Login</a>
+					</Link>
+				</li>
+
+				<li>
+					<Link prefetch href="/register">
+						<a>Register</a>
+					</Link>
+				</li>
+			</ul> 
+			<style jsx>{`
+			:global(body) {
+			margin: 0;
+			font-family: -apple-system,BlinkMacSystemFont,Avenir Next,Avenir,Helvetica,sans-serif;
+			}
+			li {
+			display: flex;
+			padding: 6px 8px;
+			}
+			ul li{
+			display: inline;
+			}
+			a {
+			color: #067df7;
+			text-decoration: none;
+			font-size: 13px;
+			}
+			`}</style>
+			</nav>
+
+	
             <form onSubmit={this.handleSubmit}>
 
                 <div> 
@@ -75,7 +114,11 @@ export default class Login extends Component {
                 </div>
 
 
-            <input type="submit" value="Submit" />
+                <Link href={"/map" }>
+				  {/* <a>{this.state.restaurants[id]}</a> */}
+                  <input type="submit" value="Submit" />
+			  </Link>
+            {/* <input type="submit" value="Submit" /> */}
             </form>
             {this.state.status}
         </div>

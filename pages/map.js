@@ -84,7 +84,6 @@ export default class Map extends Component {
 		const data = await res.json()
 		const cuisines = data.cuisines.map(cuisine => cuisine.cuisine_name)
 		const cuisineIds = data.cuisines.reduce( (p,c) => (p[c.cuisine_name] = c.cuisine_id) && p, {})
-		console.log(cuisines)
 		this.setState({
 		  cuisines,
 		  cuisineIds,
@@ -100,10 +99,6 @@ export default class Map extends Component {
 		  },});
 		const data = await res.json()
 		const locations = data.locations.map(r => JSON.parse(JSON.stringify({ "lat": r.latitude, "lng": r.longitude })))
-		console.log(locations)
-		// const cuisines = data.cuisines.map(cuisine => cuisine.cuisine_name)
-		// const cuisineIds = data.cuisines.reduce( (p,c) => (p[c.cuisine_name] = c.cuisine_id) && p, {})
-		// console.log(cuisines)
 		this.setState({
 			locations,
 		  map_state: "checkins"

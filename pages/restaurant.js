@@ -9,15 +9,6 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/
 
 export default class Restaurant extends Component {
 
-    // state = {
-    //     uploadedFile: null,
-    //     uploadedFileCloudinaryUrl: '',
-    //     restaurant_name: '',
-    //     photoLinks: [], 
-    //     photoIds: {}
-    // };
-
-
     constructor(props) {
       super(props);
       this.state = {
@@ -113,8 +104,9 @@ export default class Restaurant extends Component {
         {this.state.photoLinks.map( url => 
         <div key={url}> 
            <img src={url} />
+          <p> </p> 
           <button onClick={() => this.deletePhoto(url)}>
-          x
+          delete
           </button>
         </div> 
       )}

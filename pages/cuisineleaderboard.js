@@ -26,13 +26,11 @@ export default class cuisineleaderboard extends Component {
   async handleCusineChange(event) {
     
     await this.setState({cusine: event.target.value});
-    console.log(this.state.cusine)
   }
 
   async handleDayChange(event) {
     
     await this.setState({day: event.target.value});
-    console.log(this.state.day)
   }
 
   async handleSubmit(event) {
@@ -42,7 +40,6 @@ export default class cuisineleaderboard extends Component {
         cuisine_id: this.state.cuisineIds[cuisine], 
         num_days: this.state.day, 
       };
-      console.log(sessionStorage.getItem('id'))
       const res = await fetch("http://localhost:5000/leaderboard/top/" + sessionStorage.getItem('id'), {
         method: 'POST', 
         body: JSON.stringify(data), 
