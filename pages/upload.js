@@ -6,7 +6,7 @@ import { ButtonToolbar, DropdownButton, MenuItem } from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 
 
-const CLOUDINARY_UPLOAD_PRESET = 'x2gliq49';
+const CLOUDINARY_UPLOAD_PRESET = 'jxgkvety';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/react-cloudinary/upload';
 
 export default class Upload extends Component {
@@ -19,7 +19,8 @@ export default class Upload extends Component {
         restaurant_name: '',
         photoLinks: [], 
         photoIds: {}, 
-        rating: 0
+        rating: 0, 
+        checkedIn: ""
     };
     this.setRestaurantName()
       // this.restaurants()
@@ -116,6 +117,8 @@ export default class Upload extends Component {
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => console.log('Success:', response));
+
+        
   }
 
 
@@ -158,6 +161,10 @@ export default class Upload extends Component {
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => console.log('Success:', response));
+
+        this.setState({
+          checkedIn: "You've checked in!"
+        })
   }
 
 
@@ -166,7 +173,7 @@ export default class Upload extends Component {
     return (
       <div>
         <Nav />
-        <h2> {"Get photos from " + this.state.restaurant_name} </h2> 
+        <h2> {"Upload photos for " + this.state.restaurant_name} </h2> 
 
         {this.state.photoLinks.map( url => 
         <div key={url}> 
@@ -224,7 +231,7 @@ export default class Upload extends Component {
           Check in!
         </button>
 
-        
+        <p> {this.state.checkedIn}</p> 
 
       </div>
     );

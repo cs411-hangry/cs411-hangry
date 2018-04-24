@@ -54,6 +54,15 @@ export default () => (
 			`}</style>
 			</nav>
 
+
+			<h1 align="center"> Hangry </h1> 
+			<h3 align="center"> A location based photographic web service </h3> 
+			<h3 align="center"> Finding good food near you </h3> 
+
+			<h4 align="center">  Abdi, Alan, Ann, Aria </h4> 
+
+
+
 	</div>
 );
 

@@ -23,7 +23,7 @@ const MyMapComponent =  compose(
 )(props => (
 	<GoogleMap defaultZoom={12} defaultCenter={props.locations[0]}>
     {props.isMarkerShown &&  props.locations.map( l => 
-        <Marker position={l} />
+        <Marker position={l} title="hello" />
     )}
 	</GoogleMap>
 ));

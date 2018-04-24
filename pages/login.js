@@ -115,10 +115,8 @@ export default class Login extends Component {
 
 
                 <Link href={"/map" }>
-				  {/* <a>{this.state.restaurants[id]}</a> */}
                   <input type="submit" value="Submit" />
 			  </Link>
-            {/* <input type="submit" value="Submit" /> */}
             </form>
             {this.state.status}
         </div>

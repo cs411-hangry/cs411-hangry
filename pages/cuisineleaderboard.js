@@ -40,7 +40,7 @@ export default class cuisineleaderboard extends Component {
         cuisine_id: this.state.cuisineIds[cuisine], 
         num_days: this.state.day, 
       };
-      const res = await fetch("http://localhost:5000/leaderboard/top/" + "1", {
+      const res = await fetch("http://localhost:5000/leaderboard/top/1", {
         method: 'POST', 
         body: JSON.stringify(data), 
         headers: new Headers({
@@ -83,7 +83,7 @@ export default class cuisineleaderboard extends Component {
     return (
       <div>
         <Nav />
-        <h3> Cusine Leaderboard </h3>
+        <h3> Cuisine Leaderboard </h3>
 
         {this.state.map_state !== "results" && 
             <div> 
